@@ -7,99 +7,24 @@ help:
 	#####################################################
 	# -Type "sudo make test" to install and run the     #
 	#   program                                         #
-	# -Type "make view-output" to view the generated    #
-	#   webpage                                         #
 	# -Type "sudo make test-install" to install without #
 	#   setting up cron                                 #
-	# -Type "sudo make push" to create a zip and push   #
-	#   it to local apache server                       #
-	# -Type "sudo make adduser" add a new user that can #
-	#   login to the admin section of the site.         #
-	# -Type "sudo make editusers" to delete users       #
 	#####################################################
-adduser:
-	# This will create a new user that can login to the admin directory
-	# htpasswd uses -B to force stronger encryption
-	sudo bash adminScripts/makeNewUser.sh
-	sudo make install
-editusers:
-	# below is the current users
-	cat web/.htpasswd
-	# delete the line with the username you want removed
-	# press enter to open the users file
-	read none
-	sudo nano web/.htpasswd
-	sudo make install
-view-output:
-	midori http://localhost/CSVtoSound
-test:
-	make install
-	sudo csvtosound 
 full-install:
-	# setup and install apache
-	sudo apt-get install apache2 --assume-yes
-	sudo apt-get install apache2-utils --assume-yes
-	if ! grep "/var/www/html/csvtosound/admin" /etc/apache2/apache2.conf;then bash -c "echo '<Directory /var/www/html/csvtosound/admin>' >> /etc/apache2/apache2.conf;echo 'Options Indexes FollowSymLinks' >> /etc/apache2/apache2.conf;echo 'AllowOverride All' >> /etc/apache2/apache2.conf;echo 'Require all granted' >> /etc/apache2/apache2.conf;echo '</Directory>' >> /etc/apache2/apache2.conf";fi
-	# add php
-	sudo apt-get install php5 --assume-yes
-	# install and setup firewall
-	sudo apt-get install ufw --assume-yes
-	sudo ufw enable
-	sudo ufw allow proto tcp from any to any port 80
+	# setup csvtosound and run it
 	make install
 	sudo csvtosound 
 install:
-	# create crontab entry, remove it if it already exists
-	sudo sed -i "s/\*\/3\ \*\ \*\ \*\ \*\ root\ csvtosound\ \-c//g" /etc/crontab
-	sudo bash -c 'echo "*/3 * * * * root csvtosound -c" >> /etc/crontab'
-	# clean up empty lines in crontab
-	sudo bash -c "cat /etc/crontab | tr -s '\n' > /etc/crontab"
 	# create directories
-	sudo mkdir -p /usr/share/signage
-	sudo mkdir -p /usr/share/signage/default
-	sudo mkdir -p /var/www/html/csvtosound
-	sudo mkdir -p /var/www/html/csvtosound/admin
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/extra
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/1
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/2
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/3
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/4
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/5
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/6
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/7
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/8
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/9
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/10
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/11
-	sudo mkdir -p /var/www/html/csvtosound/backgrounds/12
-	# copy over backgrounds
-	sudo cp -rvf backgrounds /var/www/html/csvtosound/
+	sudo mkdir -p /etc/csvtosound
 	# copy over the program
 	sudo cp -fv csvtosound.py /usr/bin/csvtosound
-	sudo link /usr/bin/csvtosound /etc/cron.hourly/csvtosound || echo 'file exists!'
-	# copy over the default css
-	sudo cp -fv style.css /usr/share/signage/default/style.css
-	sudo cp -fv head.html /usr/share/signage/default/head.html
-	sudo cp -fv foot.html /usr/share/signage/default/foot.html
 	# copy over the config file to /etc
 	sudo cp -fv csvtosound.cfg /etc/csvtosound.cfg
-	# add the menu if it dont exist
-	sudo touch /usr/share/signage/menu.csv
-	# allow php system to edit csvtosound.cfg
-	sudo chmod 0777 /etc/csvtosound.cfg
-	sudo chmod 0777 /usr/share/signage/menu.csv
+	# add the schedule if it dont exist
+	sudo touch /etc/csvtosound/csvtosound.csv
 	# link the file to be in /usr/bin/ and make it executable
 	sudo chmod +x /usr/bin/csvtosound
-	sudo chmod +x /etc/cron.hourly/csvtosound
-	# copy over the webupdate script
-	sudo cp -fvr web/* /var/www/html/csvtosound/admin/
-	# copy over the htaccess file and the htpasswd file
-	sudo cp -fvr web/.ht* /var/www/html/csvtosound/admin/
-	# restart apache
-	sudo service apache2 restart
-	# run csvtosound to create a page
-	sudo CSVtoSound
 test-install:
 	# dont make the cron job work
 	# create directories -p is like force
