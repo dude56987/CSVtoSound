@@ -5,32 +5,50 @@ Use CSV document to configure a bell systems ringing times. Designed to be place
 
 ##Spreadsheet Format
 
+###Example Line
+
+ 	#daily,1,0,sound.mp3,1
+
+- First Column
+
 In the first cell of each row identify the date you want the row used on.
 
 	The format is 1/2/1970 for January first 1970
 
 Repeating dates are repsented as hashtags.
 
-- #daily
+- \#daily
   - Will play the patern every day at the specified time.
-- #monday
+- \#monday
   - Will play the patern every monday at the specified time. 
-- #tuesday
+- \#tuesday
   - Will play the pattern every tuesday at the specified time. 
-- #wendsday
+- \#wendsday
   - Will play the pattern every wendsday at the specified time. 
-- #thursday
+- \#thursday
   - Will play the pattern every thursday at the specified time.
-- #friday
+- \#friday
   - Will play the pattern every friday at the specified time. 
-- #saturday
+- \#saturday
   - Will play the pattern every saturday at the specified time. 
-- #sunday
+- \#sunday
   - Will play the pattern every sunday at the specified time. 
+
+###Second Column
+- The second column is the hour of the day you want the sound to play. 
+- The time is in military time.
+
+###Third Column
+- The third column is the minute of the hour you want to play the sound on.
+
+###Fourth Column
+- The fourth column is the filepath to the soundfile to be used.
+
+###Other Information
 
 The amount of ring patterns that can be added is unlimited. 
 
-###Example
+###Example File
 
 https://raw.githubusercontent.com/dude56987/CSVtoSound/master/example.csv
 
