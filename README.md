@@ -1,7 +1,7 @@
-CSVtoHTML
+CSVtoSound
 =========
 
-Convert CSV documents made in a spreadsheet program into HTML webpages.
+Use CSV document to configure a bell systems ringing times. Designed to be placed on a computer connected to a speaker system. The bell sounds are then played though the speakers configured in whatever manner the user specifies.
 
 ##Spreadsheet Format
 
@@ -9,27 +9,30 @@ In the first cell of each row identify the date you want the row used on.
 
 	The format is 1/2/1970 for January first 1970
 
-The second cell on a row must be the time identifier. Valid identifiers are as follows...
+Repeating dates are repsented as hashtags.
 
-- BREAKFAST
-- LUNCH
-- DINNER
-- LATEMEAL
+- #daily
+  - Will play the patern every day at the specified time.
+- #monday
+  - Will play the patern every monday at the specified time. 
+- #tuesday
+  - Will play the pattern every tuesday at the specified time. 
+- #wendsday
+  - Will play the pattern every wendsday at the specified time. 
+- #thursday
+  - Will play the pattern every thursday at the specified time.
+- #friday
+  - Will play the pattern every friday at the specified time. 
+- #saturday
+  - Will play the pattern every saturday at the specified time. 
+- #sunday
+  - Will play the pattern every sunday at the specified time. 
 
-In the following cells you can add content. Content can be the following...
-
-- Items
-  - Items may be added by simply using text
-- Headers
-  - Use a # at the beginning of the frame, what follows will be a header
-- Blank Space
-  - Put a single # into the frame to add two blank lines
-
-The amount of content that can be added is unlimited. You may also add HTML and CSS inside items.
+The amount of ring patterns that can be added is unlimited. 
 
 ###Example
 
-https://raw.githubusercontent.com/dude56987/CSVtoHTML/master/example.csv
+https://raw.githubusercontent.com/dude56987/CSVtoSound/master/example.csv
 
 ##Setup Information
 
@@ -46,5 +49,4 @@ https://raw.githubusercontent.com/dude56987/CSVtoHTML/master/example.csv
 - Server Info
   - This code is intended to run on Ubuntu Server Edition
 - Client Info
-  - This code is intended to work with the Midori web browser on the client
   - The client hardware targeted is the Raspberry PI B+
