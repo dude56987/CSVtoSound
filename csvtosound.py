@@ -188,16 +188,20 @@ def main():
 							backgroundImage='backgrounds/extra/'
 							backgroundImage+=item[12:]
 						outputFileText+=phaseLine(item)
-	# check current time based on month
-	# below is month number variable
-	if backgroundImage == '':
-		monthPath = os.path.join("backgrounds/",str(time.localtime()[1]))
-		fullMonthPath = os.path.join(config_outputLocation,monthPath)
-		monthFiles = os.listdir(fullMonthPath)
-		if len(monthFiles) == 0:
-			backgroundImage = ''
-		else:
-			monthFile = monthFiles[int(random.randrange(0,len(monthFiles)))]
-			backgroundImage = os.path.join(monthPath,monthFiles[random.randrange(0,(len(monthFiles)))])
+		elif line.split[0] == '#daily':
+			# perform this operation every day so just check the time
+			currentTime = time.localtime()
+			# currentTime is in following format
+			# year,month,day,hour,minute,second,weekday#,yearDay#
+			# splitline is the cells
+			# check the hour and compare to line 
+			if int(currentTime[3])==splitline[1]:
+				# compare minutes
+				if int(currentTime[4])==splitline[2]:
+					# check seconds
+					if int(currentTime[5])==0:
+						# if seconds are at 0 then play the sound
+						os.system(config_playCommand+' '+splitline[3])
+						# check for repeat times in command
 ########################################################################
 main()
