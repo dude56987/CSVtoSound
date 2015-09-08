@@ -10,6 +10,8 @@ help:
 	# -Type "sudo make test-install" to install without #
 	#   setting up cron                                 #
 	#####################################################
+debug:
+	csvtosound --debug
 full-install:
 	# setup csvtosound and run it
 	make install
@@ -18,6 +20,9 @@ install:
 	# create directories
 	sudo mkdir -p /etc/csvtosound
 	sudo mkdir -p /usr/share/csvtosound
+	sudo mkdir -p /usr/share/csvtosound/sounds
+	# copy over the sounds to the sound folder
+	sudo cp -rv sounds/. /usr/share/csvtosound/sounds/
 	# copy over the program
 	sudo cp -fv csvtosound.py /usr/bin/csvtosound
 	# copy over the config file to /etc

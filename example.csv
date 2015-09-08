@@ -1,25 +1,24 @@
 #comment,hour,minute,file,repeat times,playmusic after sound?,musicFilename.mp3
 #comment, the playmusic flag is not nessassary
-#daily,1,0,sound.mp3,1
-#daily,2,0,sound.mp3,2
-#daily,3,0,sound.mp3,3
-#daily,4,0,sound.mp3,4
-#daily,5,0,sound.mp3,5
-#daily,6,0,sound.mp3,6
-#daily,7,0,sound.mp3,7
-#daily,8,0,sound.mp3,8
-#daily,9,0,sound.mp3,9
-#daily,10,0,sound.mp3,1
+#daily,1,0,/usr/share/csvtosound/sounds/sound.mp3,1
+#daily,2,0,/usr/share/csvtosound/sounds/sound.mp3,2
+#daily,3,0,/usr/share/csvtosound/sounds/sound.mp3,3
+#daily,4,0,/usr/share/csvtosound/sounds/sound.mp3,4
+#daily,5,0,/usr/share/csvtosound/sounds/sound.mp3,5
+#daily,6,0,/usr/share/csvtosound/sounds/sound.mp3,6
+#daily,7,0,/usr/share/csvtosound/sounds/sound.mp3,7
+#daily,8,0,/usr/share/csvtosound/sounds/sound.mp3,8
+#daily,9,0,/usr/share/csvtosound/sounds/sound.mp3,9
+#daily,10,0,/usr/share/csvtosound/sounds/sound.mp3,1
 #comment, The below are examples of weekday specific sounds to play
-#monday,15,0,sound.mp3,1
-#tuesday,15,0,sound.mp3,1
-#wendsday,15,0,sound.mp3,1
-#thursday,15,0,sound.mp3,1
-#friday,15,0,sound.mp3,1
-#saturday,15,0,sound.mp3,1
-#sunday,15,0,sound.mp3,1
-1/1/2015,15,0,sound.mp3,1
+#monday,15,0,/usr/share/csvtosound/sounds/sound.mp3,1
+#tuesday,15,0,/usr/share/csvtosound/sounds/sound.mp3,1
+#wendsday,15,0,/usr/share/csvtosound/sounds/sound.mp3,1
+#thursday,15,0,/usr/share/csvtosound/sounds/sound.mp3,1
+#friday,15,0,/usr/share/csvtosound/sounds/sound.mp3,1
+#saturday,15,0,/usr/share/csvtosound/sounds/sound.mp3,1
+#sunday,15,0,/usr/share/csvtosound/sounds/sound.mp3,1
+1/1/2015,15,0,/usr/share/csvtosound/sounds/sound.mp3,1
 #comment,The below lines are for playing a song after the bell
-#daily,1,0,sound.mp3,1,#play,sound.mp3
-#daily,2,0,sound.mp3,1,#playrandom,sound.mp3,sound.mp3,sound.mp3,sound.mp3
-
+#daily,1,0,/usr/share/csvtosound/sounds/sound.mp3,1,#play,/usr/share/csvtosound/sounds/sound.mp3
+#daily,2,0,/usr/share/csvtosound/sounds/sound.mp3,1,#playrandom,/usr/share/csvtosound/sounds/sound.mp3,/usr/share/csvtosound/sounds/sound.mp3,/usr/share/csvtosound/sounds/sound.mp3,/usr/share/csvtosound/sounds/sound.mp3

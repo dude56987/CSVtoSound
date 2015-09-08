@@ -180,36 +180,39 @@ def main():
 	########################################################
 	# split up the input file and split in into an array
 	data=data.split('\n')
-	for line in data:
-		splitline = line.split(',')
-		if splitline[0] == todayDate:
-			currentTime = time.localtime()
-			# the fourth item in the object is hours in military time
-			currentTime = int(currentTime[3])
-			# hours in military time
-			if (currentTime >= config_breakfastStartTime) and (currentTime < config_lunchStartTime):
-			# checks if current time is between breakfast start and lunch start
-				if splitline[1] == 'BREAKFAST':
-					#Its BREAKFAST time
-					for item in splitline[2:]:
-						if item[:12] == "#BACKGROUND=":
-							backgroundImage='backgrounds/extra/'
-							backgroundImage+=item[12:]
-						outputFileText+=phaseLine(item)
-		elif splitline[0] == '#daily':
-			# perform this operation every day so just check the time
-			currentTime = time.localtime()
-			# currentTime is in following format
-			# year,month,day,hour,minute,second,weekday#,yearDay#
-			# splitline is the cells
-			# check the hour and compare to line 
-			if int(currentTime[3])==splitline[1]:
-				# compare minutes
-				if int(currentTime[4])==splitline[2]:
-					# check seconds
-					if int(currentTime[5])==0:
-						# if seconds are at 0 then play the sound
-						os.system(config_playCommand+' '+splitline[3])
-						# check for repeat times in command
+	while True:
+		# sleep for a second to keep from hammering the processor
+		time.sleep(1)
+		# perform this operation every day so just check the time
+		# currentTime is in following format
+		# year,month,day,hour,minute,second,weekday#,yearDay#
+		currentTime = time.localtime()
+		# print the current time if debug mode active
+		if '--debug' in sys.argv:
+			print(str(currentTime[3])+':'+str(currentTime[4])+':'+str(currentTime[5]))
+		# phase though the file for active lines to work on
+		for line in data:
+			splitline = line.split(',')
+			if splitline[0] == todayDate:
+				pass
+			elif splitline[0] == '#daily':
+				if '--debug' in sys.argv:
+					print('Daily argument Reconized!')
+				# splitline is the cells
+				# cells are as below
+				# date,hour,minute,ring filepath,repeat times,playtype,songfile,songfile,etc.
+				# check the hour and compare to line 
+				if int(currentTime[3])==int(splitline[1]):
+					if '--debug' in sys.argv:
+						print('Hour is correct!')
+					# compare minutes
+					if int(currentTime[4])==int(splitline[2]):
+						if '--debug' in sys.argv:
+							print('Minute is correct!')
+						# check seconds
+						if int(currentTime[5])==0:
+							# if seconds are at 0 then play the sound
+							os.system(config_playCommand+' '+splitline[3])
+							# check for repeat times in command
 ########################################################################
 main()
