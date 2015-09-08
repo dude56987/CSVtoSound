@@ -76,22 +76,27 @@ def downloadFile(fileAddress):
 	print "Finished Loading :",fileAddress
 	return fileText
 ########################################################################
-def phaseLine(item):
-	outputFileText=''
-	if len(item) > 0:
-		if item == '#':
-			#print two blank lines
-			outputFileText+=(('\t</br>'*2)+'\n')
-		elif item[:12] == "#BACKGROUND=":
-			# do nothing
-			return ''
-		elif item[0] == '#':
-			# print a header
-			outputFileText+=('\t<h1 class="header">'+item[1:]+'</h1>\n')
-		else:
-			# print a item
-			outputFileText+=('\t<div class="menu_item">\n\t\t'+item+'\n\t</div>\n')
-	return outputFileText
+def runLine(splitline,config_playCommand):
+	# if seconds are at 0 then play the sound
+	for i in range(int(splitline[4])):
+		# check for repeat times in command
+		os.system(config_playCommand+' '+splitline[3])
+	if len(splitline)>5:
+		# if music is set play it after chime
+		if splitline[5]=="#play":
+			#play following cells in order
+			for i in range(len(splitline)):
+				os.system(config_playCommand+' '+splitline[i+5])
+		elif splitline[5]=="#playrandom":
+			#play following cells in random order
+			# pull off the music files
+			musicFiles=splitline[5:]
+			# shuffle the musicfile order
+			musicFiles.shuffle()
+			for i in range(len(splitline)-5):
+				# shuffle the music files
+				# play the music files and remove them from the array
+				os.system(config_playCommand+' '+musicFiles.pop())
 ########################################################################
 # Main function
 ########################################################################
@@ -211,8 +216,6 @@ def main():
 							print('Minute is correct!')
 						# check seconds
 						if int(currentTime[5])==0:
-							# if seconds are at 0 then play the sound
-							os.system(config_playCommand+' '+splitline[3])
-							# check for repeat times in command
+							runLine(splitline,config_playCommand)
 ########################################################################
 main()
