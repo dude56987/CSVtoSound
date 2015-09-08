@@ -17,12 +17,14 @@ full-install:
 install:
 	# create directories
 	sudo mkdir -p /etc/csvtosound
+	sudo mkdir -p /usr/share/csvtosound
 	# copy over the program
 	sudo cp -fv csvtosound.py /usr/bin/csvtosound
 	# copy over the config file to /etc
 	sudo cp -fv csvtosound.cfg /etc/csvtosound.cfg
 	# add the schedule if it dont exist
-	sudo touch /etc/csvtosound/csvtosound.csv
+	#sudo touch /usr/share/csvtosound/csvtosound.csv
+	sudo cp example.csv /usr/share/csvtosound/csvtosound.csv
 	# link the file to be in /usr/bin/ and make it executable
 	sudo chmod +x /usr/bin/csvtosound
 test-install:

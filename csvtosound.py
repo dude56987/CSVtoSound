@@ -114,31 +114,39 @@ def main():
 	config = temp
 	# preset variable defaults if they are not set in config file
 	config_playCommand='avplay'
-	config_location='/etc/csvtosound/csvtosound.csv'
+	config_location='/usr/share/csvtosound/csvtosound.csv'
 	# set varables from config file for program
 	print ("#"*80)
 	print ("Reading config file...")
 	print ("#"*80)
 	for setting in config:
+		# if the line is greater than one charcter
 		if len(setting)>1:
 			if setting[0][0] == '#':
 				# the line is a comment, ignore it
 				pass
-			# config file location
-			if setting[0] == 'playCommand':
-				config_playCommand=setting[1].replace(' ','').replace('\r','\n')
-				print ("playCommand="+config_playCommand+';')
-			elif setting[0] == 'playCommand':
-				config_location=setting[1].replace(' ','').replace('\r','\n')
-				print ("location="+config_location+';')
 			else:
-				print 'Unknown config option: ',setting
+				if setting[0] == 'playCommand':
+					# CLI command to play file with
+					config_playCommand=setting[1].replace(' ','').replace('\r','\n')
+					print ("playCommand="+config_playCommand+';')
+				elif setting[0] == 'location':
+					# config file location
+					config_location=setting[1].replace(' ','').replace('\r','\n')
+					print ("location="+config_location+';')
+				else:
+					print 'Unknown config option: ',setting
 	# Seprate output with lines
 	# load the file into a string depending on if its online or offline
 	if 'http' in config_location:
 		data = downloadFile(config_location)
 	else:
 		data = loadFile(config_location)
+	if data == False:
+		print('The config file at "'+config_location+'" could not be loaded.')
+		print('The program will now close.')
+		exit()
+	# clean line endings no matter what it is
 	data = data.replace('\r\n','\n')
 	data = data.replace('\r','\n')
 	data = data.replace('\n\n','\n')
@@ -174,7 +182,7 @@ def main():
 	data=data.split('\n')
 	for line in data:
 		splitline = line.split(',')
-		if todayDate == splitline[0]:
+		if splitline[0] == todayDate:
 			currentTime = time.localtime()
 			# the fourth item in the object is hours in military time
 			currentTime = int(currentTime[3])
@@ -188,7 +196,7 @@ def main():
 							backgroundImage='backgrounds/extra/'
 							backgroundImage+=item[12:]
 						outputFileText+=phaseLine(item)
-		elif line.split[0] == '#daily':
+		elif splitline[0] == '#daily':
 			# perform this operation every day so just check the time
 			currentTime = time.localtime()
 			# currentTime is in following format
