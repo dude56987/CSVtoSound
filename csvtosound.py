@@ -82,18 +82,18 @@ def runLine(splitline,config_playCommand):
 		# check for repeat times in command
 		os.system(config_playCommand+' '+splitline[3])
 	if len(splitline)>5:
+		# cut the array to make a array of just the music files
+		musicFiles=splitline[5:]
 		# if music is set play it after chime
 		if splitline[5]=="#play":
-			#play following cells in order
-			for i in range(len(splitline)):
-				os.system(config_playCommand+' '+splitline[i+5])
+			#play following songs in order 
+			for songFilePath in musicFiles:
+				os.system(config_playCommand+' '+songFilePath)
 		elif splitline[5]=="#playrandom":
-			#play following cells in random order
-			# pull off the music files
-			musicFiles=splitline[5:]
+			#play following songs in random order
 			# shuffle the musicfile order
-			musicFiles.shuffle()
-			for i in range(len(splitline)-5):
+			random.shuffle(musicFiles)
+			for i in range(len(musicFiles)):
 				# shuffle the music files
 				# play the music files and remove them from the array
 				os.system(config_playCommand+' '+musicFiles.pop())
@@ -199,7 +199,17 @@ def main():
 		for line in data:
 			splitline = line.split(',')
 			if splitline[0] == todayDate:
-				pass
+				# if todays date is specificly picked play sound at specified time
+				if int(currentTime[3])==int(splitline[1]):
+					if '--debug' in sys.argv:
+						print('Hour is correct!')
+					# compare minutes
+					if int(currentTime[4])==int(splitline[2]):
+						if '--debug' in sys.argv:
+							print('Minute is correct!')
+						# check seconds
+						if int(currentTime[5])==0:
+							runLine(splitline,config_playCommand)
 			elif splitline[0] == '#daily':
 				if '--debug' in sys.argv:
 					print('Daily argument Reconized!')
