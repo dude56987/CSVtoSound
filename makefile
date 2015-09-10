@@ -16,6 +16,25 @@ full-install:
 	# setup csvtosound and run it
 	make install
 	sudo csvtosound 
+install-debian: install
+	# install openssh-server
+	sudo apt-get install openssh-server
+	# install and enable ufw
+	sudo apt-get install ufw --assume-yes
+	# allow ssh in the firewall
+	sudo ufw allow port 22
+	# install mplayer to play files
+	sudo apt-get install mplayer --assume-yes
+	# set the timezone
+	sudo dpkg --reconfigure tzdata
+	# create user to launch program under
+	sudo adduser bellsystem
+	# modify users group permissions to add them to audio
+	sudo usermod -a -G audio bellsystem
+	# add the program to /home/bellsystem/.profile 
+
+	# add autologin user to /etc/inittab on tty2
+
 install:
 	# create directories
 	sudo mkdir -p /etc/csvtosound
