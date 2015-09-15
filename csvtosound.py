@@ -77,6 +77,7 @@ def downloadFile(fileAddress):
 	return fileText
 ########################################################################
 def runLine(splitline,config_playCommand):
+	'''Reads the splitline (line split by commas into array) and plays any sound configurations included.'''
 	# if seconds are at 0 then play the sound
 	for i in range(int(splitline[4])):
 		# check for repeat times in command
@@ -98,6 +99,24 @@ def runLine(splitline,config_playCommand):
 				# play the music files and remove them from the array
 				os.system(config_playCommand+' '+musicFiles.pop())
 ########################################################################
+def checkTime(currentTime,splitline,config_playCommand):
+	'''Checks the hours and minutes compares them with splitline,
+	then runs runline to perform approprate actions.'''
+	# splitline is the cells
+	# cells are as below
+	# date,hour,minute,ring filepath,repeat times,playtype,songfile,songfile,etc.
+	# check the hour and compare to line 
+	if int(currentTime[3])==int(splitline[1]):
+		if '--debug' in sys.argv:
+			print('Hour is correct!')
+		# compare minutes
+		if int(currentTime[4])==int(splitline[2]):
+			if '--debug' in sys.argv:
+				print('Minute is correct!')
+			# check seconds
+			if int(currentTime[5])==0:
+				runLine(splitline,config_playCommand)
+########################################################################
 # Main function
 ########################################################################
 def main():
@@ -118,7 +137,7 @@ def main():
 		temp.append(item.split('='))
 	config = temp
 	# preset variable defaults if they are not set in config file
-	config_playCommand='avplay'
+	config_playCommand='mplayer'
 	config_location='/usr/share/csvtosound/csvtosound.csv'
 	# set varables from config file for program
 	print ("#"*80)
@@ -213,19 +232,27 @@ def main():
 			elif splitline[0] == '#daily':
 				if '--debug' in sys.argv:
 					print('Daily argument Reconized!')
-				# splitline is the cells
-				# cells are as below
-				# date,hour,minute,ring filepath,repeat times,playtype,songfile,songfile,etc.
-				# check the hour and compare to line 
-				if int(currentTime[3])==int(splitline[1]):
-					if '--debug' in sys.argv:
-						print('Hour is correct!')
-					# compare minutes
-					if int(currentTime[4])==int(splitline[2]):
-						if '--debug' in sys.argv:
-							print('Minute is correct!')
-						# check seconds
-						if int(currentTime[5])==0:
-							runLine(splitline,config_playCommand)
+				checkTime(currentTime,splitline,config_playCommand)
+			elif splitline[0] == '#monday':
+				if int(currentTime[6])==0:
+					checkTime(currentTime,splitline,config_playCommand)
+			elif splitline[0] == '#tuesday':
+				if int(currentTime[6])==1:
+					checkTime(currentTime,splitline,config_playCommand)
+			elif splitline[0] == '#wendsday':
+				if int(currentTime[6])==2:
+					checkTime(currentTime,splitline,config_playCommand)
+			elif splitline[0] == '#thursday':
+				if int(currentTime[6])==3:
+					checkTime(currentTime,splitline,config_playCommand)
+			elif splitline[0] == '#friday':
+				if int(currentTime[6])==4:
+					checkTime(currentTime,splitline,config_playCommand)
+			elif splitline[0] == '#saturday':
+				if int(currentTime[6])==5:
+					checkTime(currentTime,splitline,config_playCommand)
+			elif splitline[0] == '#sunday':
+				if int(currentTime[6])==6:
+					checkTime(currentTime,splitline,config_playCommand)
 ########################################################################
 main()
