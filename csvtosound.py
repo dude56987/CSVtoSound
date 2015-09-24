@@ -117,9 +117,44 @@ def runLine(splitline,config_playCommand):
 	for i in range(int(splitline[4])):
 		# check for repeat times in command
 		os.system(config_playCommand+' '+splitline[3])
-	if len(splitline)>5:
-		# cut the array to make a array of just the music files
-		musicFiles=splitline[5:]
+	if "#play" in splitline[5]:
+		# create musicFiles array to store songs to play
+		musicFiles=[]
+		# if the line contains a #play or #playrandom cell create
+		# a song list array
+		for songPath in splitline[6:]:
+			# os.sep is operating system path seprator
+			print('SONGPATH='+songPath)
+			if songPath[len(songPath)-1]==os.sep:
+				# if the entry ends in a slash it is a directory
+				# add one song
+				fileList=os.listdir(songPath)
+				random.shuffle(fileList)
+				escape=False
+				counter=0
+				#find a file that is not in the blocklist
+				while escape==False:
+					print('length of filelist='+str(len(fileList)))#DEBUG
+					print('counter='+str(counter))#DEBUG
+					# if not the blocklist or a directory
+					if (('.blocklist' in fileList[counter]) != True) and ('.' in fileList[counter]):
+						print('escape='+str(escape))#DEBUG
+						escape=notInBlocklist(os.path.join(songPath,fileList[counter]))
+						# if file is not in blocklist change filename 
+						if escape==True:
+							fileName=fileList[counter]	
+					counter+=1
+					#if all files are in the blocklist delete it
+					if counter > (len(fileList)-1):
+						os.system('rm '+songPath+'.blocklist')	
+				# combine the songpath and the filename
+				musicFiles.append(os.path.join(songPath,fileName))
+				# add all songs
+				#for fileName in os.listdir(songPath):
+				#	musicFiles.append(os.path.join(songPath,fileName))
+			elif '.' in songPath:
+				# if the entry is just a song add that song path
+				musicFiles.append(songPath)
 		# if music is set play it after chime
 		if splitline[5]=="#play":
 			#play following songs in order 
