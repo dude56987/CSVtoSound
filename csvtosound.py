@@ -129,7 +129,7 @@ def runLine(splitline,config_playCommand):
 			#play following songs in random order
 			# shuffle the musicfile order
 			random.shuffle(musicFiles)
-			for i in range(len(musicFiles)):
+			for songFilePath in musicFiles:
 				# shuffle the music files
 				# play the music files and remove them from the array
 				os.system(config_playCommand+' '+musicFiles.pop())
