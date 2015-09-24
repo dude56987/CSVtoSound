@@ -76,6 +76,41 @@ def downloadFile(fileAddress):
 	print "Finished Loading :",fileAddress
 	return fileText
 ########################################################################
+def getBlocklistPath(musicFile):
+	# Pull the blocklist path out the musicFile path
+	# The blocklist is stored in .blocklist in the same directory
+	blocklistPath=musicFile.split(os.sep)
+	blocklistPath.pop()
+	blocklistPath=os.sep.join(blocklistPath)
+	blocklistPath=os.path.join(blocklistPath,'.blocklist')
+	if os.path.exists(blocklistPath) != True:
+		os.system('touch '+blocklistPath)
+	return blocklistPath
+def addToBlocklist(musicFile):
+	'''Add a new item to the blocklist file.'''
+	blocklistPath=getBlocklistPath(musicFile)
+	blocklist=loadFile(blocklistPath)
+	blocklist+=musicFile+'\n'
+	writeFile(blocklistPath,blocklist)
+def notInBlocklist(musicFile):
+	'''Check the blocklist and returns true if the file is in the
+	blocklist.'''
+	# load the blocklist and split on \n line endings
+	blocklist=loadFile(getBlocklistPath(musicFile))
+	if blocklist==False:
+		print("Failed to load blocklist!")
+		return False
+	# if the blocklist loads split it into an array
+	blocklist=blocklist.split('\n')
+	if musicFile in blocklist:
+		# if the file has been played
+		# skip the file
+		return False
+	else:
+		# add it to the blocklist and return false
+		addToBlocklist(musicFile)
+		return True
+########################################################################
 def runLine(splitline,config_playCommand):
 	'''Reads the splitline (line split by commas into array) and plays any sound configurations included.'''
 	# if seconds are at 0 then play the sound
