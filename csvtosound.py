@@ -147,6 +147,8 @@ def runLine(splitline,config_playCommand):
 					#if all files are in the blocklist delete it
 					if counter > (len(fileList)-1):
 						os.system('rm '+songPath+'.blocklist')	
+						# reset the counter to zero
+						counter=0
 				# combine the songpath and the filename
 				musicFiles.append(os.path.join(songPath,fileName))
 				# add all songs
