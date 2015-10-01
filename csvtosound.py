@@ -278,44 +278,58 @@ def main():
 		if '--debug' in sys.argv:
 			print(str(currentTime[3])+':'+str(currentTime[4])+':'+str(currentTime[5]))
 		# phase though the file for active lines to work on
+		mute=False
 		for line in data:
 			splitline = line.split(',')
 			if splitline[0] == todayDate:
+				if splitline[1]=="#mute":
+					# set mute to block playing anything
+					mute=True
 				# if todays date is specificly picked play sound at specified time
-				if int(currentTime[3])==int(splitline[1]):
-					if '--debug' in sys.argv:
-						print('Hour is correct!')
-					# compare minutes
-					if int(currentTime[4])==int(splitline[2]):
+				else:
+					if int(currentTime[3])==int(splitline[1]):
 						if '--debug' in sys.argv:
-							print('Minute is correct!')
-						# check seconds
-						if int(currentTime[5])==0:
-							runLine(splitline,config_playCommand)
+							print('Hour is correct!')
+						# compare minutes
+						if int(currentTime[4])==int(splitline[2]):
+							if '--debug' in sys.argv:
+								print('Minute is correct!')
+							# check seconds
+							if int(currentTime[5])==0:
+								if mute==False:
+									runLine(splitline,config_playCommand)
 			elif splitline[0] == '#daily':
 				if '--debug' in sys.argv:
 					print('Daily argument Reconized!')
-				checkTime(currentTime,splitline,config_playCommand)
+				if mute==False:
+					checkTime(currentTime,splitline,config_playCommand)
 			elif splitline[0] == '#monday':
 				if int(currentTime[6])==0:
-					checkTime(currentTime,splitline,config_playCommand)
+					if mute==False:
+						checkTime(currentTime,splitline,config_playCommand)
 			elif splitline[0] == '#tuesday':
 				if int(currentTime[6])==1:
-					checkTime(currentTime,splitline,config_playCommand)
+					if mute==False:
+						checkTime(currentTime,splitline,config_playCommand)
 			elif splitline[0] == '#wendsday':
 				if int(currentTime[6])==2:
-					checkTime(currentTime,splitline,config_playCommand)
+					if mute==False:
+						checkTime(currentTime,splitline,config_playCommand)
 			elif splitline[0] == '#thursday':
 				if int(currentTime[6])==3:
-					checkTime(currentTime,splitline,config_playCommand)
+					if mute==False:
+						checkTime(currentTime,splitline,config_playCommand)
 			elif splitline[0] == '#friday':
 				if int(currentTime[6])==4:
-					checkTime(currentTime,splitline,config_playCommand)
+					if mute==False:
+						checkTime(currentTime,splitline,config_playCommand)
 			elif splitline[0] == '#saturday':
 				if int(currentTime[6])==5:
-					checkTime(currentTime,splitline,config_playCommand)
+					if mute==False:
+						checkTime(currentTime,splitline,config_playCommand)
 			elif splitline[0] == '#sunday':
 				if int(currentTime[6])==6:
-					checkTime(currentTime,splitline,config_playCommand)
+					if mute==False:
+						checkTime(currentTime,splitline,config_playCommand)
 ########################################################################
 main()
