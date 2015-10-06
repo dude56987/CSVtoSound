@@ -113,16 +113,17 @@ def notInBlocklist(musicFile):
 ########################################################################
 def runLine(splitline,config_playCommand):
 	'''Reads the splitline (line split by commas into array) and plays any sound configurations included.'''
-	# if seconds are at 0 then play the sound
+	# if seconds are at 0 then play the main sound the number of repeat times
 	for i in range(int(splitline[4])):
 		# check for repeat times in command
-		os.system(config_playCommand+' '+splitline[3])
-	if "#play" in splitline[5]:
+		os.system(config_playCommand+' '+os.path.join("/usr/share/csvtosound/sounds/",splitline[3]))
+	if len(splitline)>=6:
 		# create musicFiles array to store songs to play
 		musicFiles=[]
 		# if the line contains a #play or #playrandom cell create
 		# a song list array
 		for songPath in splitline[6:]:
+			songPath=os.path.join("/usr/share/csvtosound/sounds/",songPath)
 			# os.sep is operating system path seprator
 			print('SONGPATH='+songPath)
 			if songPath[len(songPath)-1]==os.sep:
