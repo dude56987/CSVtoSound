@@ -13,7 +13,11 @@ Use CSV document to configure a bell systems ringing times. Designed to be place
 
 In the first cell of each row identify the date you want the row used on.
 
-	The format is 1/2/1970 for January first 1970
+	The format is 1/1/1970 for January first 1970.
+
+Dates can also contain regular expressions.
+
+	For example 1/*/* would run any day in January of any year.
 
 Repeating dates are repsented as hashtags.
 
