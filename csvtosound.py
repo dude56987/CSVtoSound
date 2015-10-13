@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ########################################################################
-import urllib2,os,sys,random,datetime,time
+import urllib2,os,sys,random,datetime,time,re
 ########################################################################
 def loadFile(fileName):
 	try:
@@ -123,10 +123,12 @@ def runLine(splitline,config_playCommand):
 		# if the line contains a #play or #playrandom cell create
 		# a song list array
 		for songPath in splitline[6:]:
-			songPath=os.path.join("/usr/share/csvtosound/sounds/",songPath)
+			if os.sep in songPath:
+				# add path to songpath if it is not blank
+				songPath=os.path.join("/usr/share/csvtosound/sounds/",songPath)
 			# os.sep is operating system path seprator
 			print('SONGPATH='+songPath)
-			if songPath[len(songPath)-1]==os.sep:
+			if os.sep in songPath:
 				# if the entry ends in a slash it is a directory
 				# add one song
 				fileList=os.listdir(songPath)
@@ -281,8 +283,12 @@ def main():
 		# phase though the file for active lines to work on
 		mute=False
 		for line in data:
-			splitline = line.split(',')
-			if splitline[0] == todayDate:
+			if len(line) < 5:
+				splitline=['#comment','Invalid Syntax']
+			else:
+				splitline = line.split(',')
+			# use regular expressions in date comparisons
+			if re.search(splitline[0],todayDate):
 				if splitline[1]=="#mute":
 					# set mute to block playing anything
 					mute=True
