@@ -9,7 +9,7 @@ Use CSV document to configure a bell systems ringing times. Designed to be place
 
  	#daily,1,0,sound.mp3,1
 
-- First Column
+###First Column
 
 In the first cell of each row identify the date you want the row used on.
 
@@ -95,5 +95,3 @@ https://raw.githubusercontent.com/dude56987/CSVtoSound/master/example.csv
 
 - Server Info
   - This code is intended to run on Ubuntu Server Edition
-- Client Info
-  - The client hardware targeted is the Raspberry PI B+
