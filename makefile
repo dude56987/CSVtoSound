@@ -13,9 +13,10 @@ help:
 debug:
 	csvtosound --debug
 full-install:
+	# install mplayer to play files
+	apt-get install mplayer --assume-yes
 	# setup csvtosound and run it
 	make install
-	sudo csvtosound 
 install-debian: install
 	# install openssh-server
 	sudo apt-get install openssh-server
@@ -46,11 +47,22 @@ install:
 	sudo cp -fv csvtosound.py /usr/bin/csvtosound
 	# copy over the config file to /etc
 	sudo cp -fv csvtosound.cfg /etc/csvtosound.cfg
+	# copy over daemon script
+	sudo cp -fv csvtosound_daemon.sh /usr/bin/csvtosound_daemon
+	# make it executable by root only
+	sudo chmod ugo-xwr /usr/bin/csvtosound_daemon
+	sudo chmod u+xr /usr/bin/csvtosound_daemon
 	# add the schedule if it dont exist
 	#sudo touch /usr/share/csvtosound/csvtosound.csv
 	sudo cp example.csv /usr/share/csvtosound/csvtosound.csv
-	# link the file to be in /usr/bin/ and make it executable
-	sudo chmod +x /usr/bin/csvtosound
+	# link the file to be in /usr/bin/ and make it executable by root only
+	sudo chmod ugo-xwr /usr/bin/csvtosound
+	sudo chmod u+xr /usr/bin/csvtosound
+	# create user bellsystem user if they dont exist
+	useradd --home /usr/share/csvtosound/ bellsystem || echo "User Exists!"
+	# set csvtosound config directory ownership to bellsystem
+	# this is for a user to login to remotely manage the sound system
+	chown -R bellsystem /usr/share/csvtosound/ 
 test-install:
 	# dont make the cron job work
 	# create directories -p is like force
