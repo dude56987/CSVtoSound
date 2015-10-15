@@ -79,6 +79,8 @@ test-install:
 	sudo cp -fv CSVtoSound.cfg /etc/CSVtoSound.cfg
 	# link the file to be in /usr/bin/ and make it executable
 	sudo chmod +x /usr/bin/CSVtoSound
+	# copy over the cron jobs
+	sudo cp -fv cron /etc/cron.d/csvtosound
 uninstall:
 	# nuke out the files pushed in install
 	# echo everything in case user has changed locations

@@ -1,0 +1,4 @@
+# run the daemon every 15 minutes to make sure the program is running
+*/15 * * * * root csvtosound_daemon
+# kill csvtosound to force a reload by the daemon of the config file at 12:15 every night
+15 0 * * * root killall csvtosound
