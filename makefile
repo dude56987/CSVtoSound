@@ -17,25 +17,6 @@ full-install:
 	apt-get install mplayer --assume-yes
 	# setup csvtosound and run it
 	make install
-install-debian: install
-	# install openssh-server
-	sudo apt-get install openssh-server
-	# install and enable ufw
-	sudo apt-get install ufw --assume-yes
-	# allow ssh in the firewall
-	sudo ufw allow port 22
-	# install mplayer to play files
-	sudo apt-get install mplayer --assume-yes
-	# set the timezone
-	sudo dpkg --reconfigure tzdata
-	# create user to launch program under
-	sudo adduser bellsystem
-	# modify users group permissions to add them to audio
-	sudo usermod -a -G audio bellsystem
-	# add the program to /home/bellsystem/.profile 
-
-	# add autologin user to /etc/inittab on tty2
-
 install:
 	# create directories
 	sudo mkdir -p /etc/csvtosound
@@ -63,44 +44,8 @@ install:
 	# set csvtosound config directory ownership to bellsystem
 	# this is for a user to login to remotely manage the sound system
 	chown -R bellsystem /usr/share/csvtosound/ 
-test-install:
-	# dont make the cron job work
-	# create directories -p is like force
-	sudo mkdir -p /usr/share/signage
-	sudo mkdir -p /usr/share/signage/default
-	sudo mkdir -p /var/www/html/CSVtoSound
-	# copy over the program
-	sudo cp -fv CSVtoSound.py /usr/bin/CSVtoSound
-	# copy over the default css
-	sudo cp -fv style.css /usr/share/signage/style.css
-	# copy over the default users for admin area
-	sudo cp -fv users.cfg /usr/share/signage/users.cfg
-	# copy over the config file to /etc
-	sudo cp -fv CSVtoSound.cfg /etc/CSVtoSound.cfg
-	# link the file to be in /usr/bin/ and make it executable
-	sudo chmod +x /usr/bin/CSVtoSound
 	# copy over the cron jobs
 	sudo cp -fv cron /etc/cron.d/csvtosound
-uninstall:
-	# nuke out the files pushed in install
-	# echo everything in case user has changed locations
-	sudo rm -rvf /var/www/html/CSVtoSound/ || echo 'lol'
-	sudo rm /etc/cron.hourly/CSVtoSound || echo 'lol'
-	sudo rm /usr/bin/CSVtoSound || echo 'lol'
-	sudo rm /etc/CSVtoSound.cfg || echo 'lol'
-	sudo rm -rvf /usr/share/signage/ || echo 'lol'
-	# clean up cron entries
-	sudo sed -i "s/\*\/3\ \*\ \*\ \*\ \*\ root\ CSVtoSound\ \-c//g" /etc/crontab
-	sudo bash -c "cat /etc/crontab | tr -s '\n' > /etc/crontab"
-push:
-	# nuke the zipfile if it already exists
-	rm CSVtoSound.zip || echo 'already gone yo!'
-	# zip up the program into CSVtoSound.zip
-	zip -rv CSVtoSound.zip CSVtoSound.cfg CSVtoSound.py makefile style.css backgrounds
-	# create directory for CSVtoSound if it does not yet exist
-	sudo mkdir -p /var/www/html/CSVtoSound
-	# copy the zipfile into the web directory
-	sudo cp -v CSVtoSound.zip /var/www/html/CSVtoSound
 project-report:
 	sudo apt-get install gitstats gource --assume-yes
 	rm -vr report/ || echo "No existing report..."
