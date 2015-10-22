@@ -6,6 +6,6 @@ Installed-Size: 000000
 Homepage: hacker-haven.com
 Priority: optional
 Architecture: all
-Depends: python
+Depends: python, mplayer
 Description: CSV file based configurable bell ringing system
  Using a csv file stored at /usr/share/csvtosound/csvtosound.csv lets the user set sound files to play in complex or simple sequences.This program is designed for use as a bellsystem consisting of a computer hooked to a set of speakers. This program can also be used in its default configuration as something similar to a grandfather clock.
