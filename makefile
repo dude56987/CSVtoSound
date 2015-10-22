@@ -17,7 +17,45 @@ full-install:
 	apt-get install mplayer --assume-yes
 	# setup csvtosound and run it
 	make install
-install:
+install: build
+	sudo gdebi --n csvtosound.deb 
+build:
+	# create directories
+	mkdir -p debian/usr/bin/
+	mkdir -p debian/etc/csvtosound
+	mkdir -p debian/usr/share/csvtosound
+	mkdir -p debian/usr/share/csvtosound/sounds
+	# add control files
+	mkdir -p debian/DEBIAN/
+	cp -vf .debdata/* debian/DEBIAN/
+	# copy over the sounds to the sound folder
+	cp -rv sounds/. debian/usr/share/csvtosound/sounds/
+	# copy over the program
+	cp -fv csvtosound.py debian/usr/bin/csvtosound
+	# copy over the config file to /etc
+	cp -fv csvtosound.cfg debian/etc/csvtosound.cfg
+	# copy over daemon script
+	cp -fv csvtosound_daemon.sh debian/usr/bin/csvtosound_daemon
+	# make it executable by root only
+	chmod ugo-xwr debian/usr/bin/csvtosound_daemon
+	chmod u+xr debian/usr/bin/csvtosound_daemon
+	# add the schedule if it dont exist
+	#sudo touch /usr/share/csvtosound/csvtosound.csv
+	cp example.csv debian/usr/share/csvtosound/csvtosound.csv
+	# link the file to be in /usr/bin/ and make it executable by root only
+	chmod ugo-xwr debian/usr/bin/csvtosound
+	chmod u+xr debian/usr/bin/csvtosound
+	# create cron jobs folder
+	mkdir -p debian/etc/cron.d/
+	# copy over the cron jobs
+	sudo cp -fv cron debian/etc/cron.d/csvtosound
+	# create the package
+	dpkg-deb -Z xz -z 9 --build debian
+	# rename the package
+	mv debian.deb csvtosound.deb
+	# clean package build directory
+	rm -rvf debian
+manual-install:
 	# create directories
 	sudo mkdir -p /etc/csvtosound
 	sudo mkdir -p /usr/share/csvtosound

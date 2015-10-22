@@ -1,0 +1,6 @@
+#! /bin/bash
+# create user bellsystem user if they dont exist
+useradd --home /usr/share/csvtosound/ bellsystem || echo "User Exists!"
+# set csvtosound config directory ownership to bellsystem
+# this is for a user to login to remotely manage the sound system
+chown -R bellsystem /usr/share/csvtosound/ 
