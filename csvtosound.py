@@ -287,27 +287,34 @@ def main():
 				splitline=['#comment','Invalid Syntax']
 			else:
 				splitline = line.split(',')
-			# use regular expressions in date comparisons
-			if re.search(splitline[0],todayDate):
-				if splitline[1]=="#mute":
-					# set mute to block playing anything
-					mute=True
-				# if todays date is specificly picked play sound at specified time
-				else:
-					if int(currentTime[3])==int(splitline[1]):
-						if '--debug' in sys.argv:
-							print('Hour is correct!')
-						# compare minutes
-						if int(currentTime[4])==int(splitline[2]):
-							if '--debug' in sys.argv:
-								print('Minute is correct!')
-							# check seconds
-							if int(currentTime[5])==0:
-								if mute==False:
-									runLine(splitline,config_playCommand)
-			elif splitline[0] == '#daily':
+			if '#comment' in splitline[0]:
 				if '--debug' in sys.argv:
-					print('Daily argument Reconized!')
+					print('Commented Line, Nothing to do.')
+			# if the line starts with a * add to regex to prevent crashing
+			if splitline[0][0]=='*':
+				splitline[0]='^.'+splitline[0]
+			# use regular expressions in date comparisons
+			try:
+				if re.search((str(splitline[0])),todayDate):
+					if splitline[1]=='#mute':
+						# set mute to block playing anything
+						mute=True
+					# if todays date is specificly picked play sound at specified time
+					else:
+						if int(currentTime[3])==int(splitline[1]):
+							if '--debug' in sys.argv:
+								print('Hour is correct!')
+							# compare minutes
+							if int(currentTime[4])==int(splitline[2]):
+								if '--debug' in sys.argv:
+									print('Minute is correct!')
+								# check seconds
+								if int(currentTime[5])==0:
+									if mute==False:
+										runLine(splitline,config_playCommand)
+			except:
+				print('ERROR: Invalid regex expression!')
+			if splitline[0] == '#daily':
 				if mute==False:
 					checkTime(currentTime,splitline,config_playCommand)
 			elif splitline[0] == '#monday':
