@@ -12,11 +12,6 @@ help:
 	#####################################################
 debug:
 	csvtosound --debug
-full-install:
-	# install mplayer to play files
-	apt-get install mplayer --assume-yes
-	# setup csvtosound and run it
-	make install
 install: build
 	sudo gdebi --n csvtosound.deb 
 build:
@@ -55,35 +50,6 @@ build:
 	mv debian.deb csvtosound.deb
 	# clean package build directory
 	rm -rvf debian
-manual-install:
-	# create directories
-	sudo mkdir -p /etc/csvtosound
-	sudo mkdir -p /usr/share/csvtosound
-	sudo mkdir -p /usr/share/csvtosound/sounds
-	# copy over the sounds to the sound folder
-	sudo cp -rv sounds/. /usr/share/csvtosound/sounds/
-	# copy over the program
-	sudo cp -fv csvtosound.py /usr/bin/csvtosound
-	# copy over the config file to /etc
-	sudo cp -fv csvtosound.cfg /etc/csvtosound.cfg
-	# copy over daemon script
-	sudo cp -fv csvtosound_daemon.sh /usr/bin/csvtosound_daemon
-	# make it executable by root only
-	sudo chmod ugo-xwr /usr/bin/csvtosound_daemon
-	sudo chmod u+xr /usr/bin/csvtosound_daemon
-	# add the schedule if it dont exist
-	#sudo touch /usr/share/csvtosound/csvtosound.csv
-	sudo cp example.csv /usr/share/csvtosound/csvtosound.csv
-	# link the file to be in /usr/bin/ and make it executable by root only
-	sudo chmod ugo-xwr /usr/bin/csvtosound
-	sudo chmod u+xr /usr/bin/csvtosound
-	# create user bellsystem user if they dont exist
-	useradd --home /usr/share/csvtosound/ bellsystem || echo "User Exists!"
-	# set csvtosound config directory ownership to bellsystem
-	# this is for a user to login to remotely manage the sound system
-	chown -R bellsystem /usr/share/csvtosound/ 
-	# copy over the cron jobs
-	sudo cp -fv cron /etc/cron.d/csvtosound
 project-report:
 	sudo apt-get install gitstats gource --assume-yes
 	rm -vr report/ || echo "No existing report..."

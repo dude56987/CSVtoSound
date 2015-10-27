@@ -83,6 +83,8 @@ https://raw.githubusercontent.com/dude56987/CSVtoSound/master/example.csv
 
 ##Setup Information
 
+###Manual Install
+
 - Download the source 
   - On github you can download a zipfile on the right side of the webpage.
   - You must extract the source if it is in a zipfile
@@ -91,6 +93,10 @@ https://raw.githubusercontent.com/dude56987/CSVtoSound/master/example.csv
   - That will install the program and its necessary components
   - This will install and setup apache if its not installed already
  
+###CLI Oneline Install
+
+	pkexec bash -c "apt-get install git make gdebi --assume-yes && git clone https://github.com/dude56987/csvtosound -o /tmp/csvtosound && cd /tmp/csvtosound && make install && rm -rvf /tmp/csvtosound"
+
 ###Additional Setup Information
 
 - Server Info
